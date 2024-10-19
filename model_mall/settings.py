@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import yaml
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,8 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9ptpeli8qt01!n=u#f-27ofb0t0^$i@4gl0$959w=$vey47x-k'
 
+# ENVIRONMENT_CONFIG
+ENVIRONMENT = os.getenv('MODEL_MALL_ENV', 'development')
+
+# 读取 YAML 文件
+with open(os.path.join(BASE_DIR, 'config.yaml'), 'r') as file:
+    config = yaml.safe_load(file)
+
+# 使用 YAML 文件中的配置
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config[ENVIRONMENT]['DEBUG']
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'client',
-    'admin'
+    'admin_manage'
 ]
 
 MIDDLEWARE = [
@@ -78,8 +87,12 @@ WSGI_APPLICATION = 'model_mall.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': config[ENVIRONMENT]['DATABASE']['ENGINE'],
+        'NAME': config[ENVIRONMENT]['DATABASE']['NAME'],
+        'USER': config[ENVIRONMENT]['DATABASE']['USER'],
+        'PASSWORD': config[ENVIRONMENT]['DATABASE']['PASSWORD'],
+        'HOST': config[ENVIRONMENT]['DATABASE']['HOST'],
+        'PORT': config[ENVIRONMENT]['DATABASE']['PORT'],
     }
 }
 
