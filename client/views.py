@@ -18,7 +18,7 @@ def login(request):
     except (ValueError, TypeError, KeyError):
         return JsonResponse(status=400, data={})
 
-    sql = "SELECT id, username, avater, role FROM `user` WHERE username = %s AND password = %s;"
+    sql = "SELECT id, username, avatar, role FROM model.users WHERE username = %s AND password = %s;"
     user_res = SQLManager.fetchone(sql, params=(username, password))
     if not user_res:
         return JsonResponse(status=200, data={"data": {}, "msg": "用户名/密码错误"})
@@ -27,6 +27,11 @@ def login(request):
 
 
 def register(request):
+    """
+    用户注册接口
+    :param request:
+    :return:
+    """
     try:
         params = request.POST
         username = params["username"]
@@ -56,6 +61,11 @@ def register(request):
 
 
 def get_model_list(request):
+    """
+    获取模型列表信息
+    :param request:
+    :return:
+    """
     try:
         params = request.GET
         merchant_id = int(params.get("merchant_id", "0"))
@@ -127,3 +137,11 @@ def get_model_list(request):
 
     return JsonResponse(status=200, data=model_dict.values())
 
+
+def get_cart_list(request):
+    """
+    获取购物车列表信息
+    :param request:
+    :return:
+    """
+    pass

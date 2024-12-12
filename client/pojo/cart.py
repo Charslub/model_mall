@@ -32,9 +32,18 @@ class Cart:
         cache.set(self.uid, str(cart_list))
         return model_rs
 
-    def get_commodity_list(self):
+    def get_commodity_list(self, params):
         if not self.cart_rs:
             return []
+        condition_sql, condition_list = [], []
+        type_id = params.get("type_id")
+        if type_id:
+            sql = "SELECT model_id FROM model.models_types WHERE type_id = %s;"
+            model_type_rs = SQLManager.fetchmany(sql, params=(type_id,))
+            if not model_type_rs:
+                return []
+            condition_sql.append("id IN %s")
+            condition_list.append([_["model_id"] for _ in model_type_rs])
         cart_list = eval(self.cart_rs)
         sql = "SELECT * FROM model.models WHERE id IN %s;"
         model_rs = SQLManager.fetchmany(sql, cart_list)
