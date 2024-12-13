@@ -70,3 +70,25 @@ class SQLManager:
         except OperationalError as e:
             print(f"Error executing insert: {e}")
             return None
+
+    @staticmethod
+    def fetchmany_total(query, params=None):
+        """
+        执行带有 SQL_CALC_FOUND_ROWS 的查询，并返回结果和总行数
+        :param query: SQL 查询语句（包含 SQL_CALC_FOUND_ROWS）
+        :param params: 查询参数
+        :return: 查询结果和总行数 (result, total_count)
+        """
+        try:
+            with connection.cursor() as cursor:
+                # 执行主查询
+                cursor.execute(query, params or [])
+                result = cursor.fetchall()  # 获取查询结果
+
+                # 查询匹配的总行数
+                cursor.execute("SELECT FOUND_ROWS()")
+                total_count = cursor.fetchone()[0]  # 获取总行数
+            return result, total_count
+        except OperationalError as e:
+            print(f"Error executing query with SQL_CALC_FOUND_ROWS: {e}")
+            return None, 0
