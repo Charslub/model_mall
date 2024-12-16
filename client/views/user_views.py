@@ -1,12 +1,15 @@
 from django.http import JsonResponse
 from django.urls import path
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_POST
 
+from client.decorators import sign_authenticator
 from utils.sql_utils import SQLManager
+from utils.token_utils import Token
 
 
 # Create your views here.
 @require_POST
+@sign_authenticator
 @path("/login", name="client_login")
 def login(request):
     """
@@ -26,10 +29,15 @@ def login(request):
     if not user_res:
         return JsonResponse(status=200, data={"data": {}, "msg": "用户名/密码错误"})
 
+    # 生成用户token并返回到前端
+    token = Token().create_jwt_token({"id": user_res["id"], "username": username})
+    user_res["token"] = token
+
     return JsonResponse(status=200, data=user_res)
 
 
 @require_POST
+@sign_authenticator
 @path("/register", name="client_register")
 def register(request):
     """

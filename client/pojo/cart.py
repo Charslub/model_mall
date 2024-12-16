@@ -1,14 +1,10 @@
 from typing import List
 
 from django.core.cache import cache
-from django.urls import path
-from django.views.decorators.http import require_GET
 
 from utils.sql_utils import SQLManager
 
 
-@require_GET
-@path("", name="get_models")
 class Cart:
     def __init__(self, uid):
         self.uid = uid

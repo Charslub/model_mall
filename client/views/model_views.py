@@ -83,3 +83,22 @@ def get_model_list(request):
             }
 
     return JsonResponse(status=200, data={"total": total, "data": model_dict.values()})
+
+
+def upload_models(request):
+    """
+    模型上传
+    :param request:
+    :return:
+    """
+    pass
+
+
+def discern_models(request):
+    """
+    模型类型识别
+    :param request:
+    :return:
+    """
+    # TODO: 微服务调用识别模型内容
+    pass
