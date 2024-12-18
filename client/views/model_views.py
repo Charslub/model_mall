@@ -6,7 +6,6 @@ from utils.sql_utils import SQLManager
 
 
 @require_GET
-@path("", name="get_models")
 def get_model_list(request):
     """
     获取模型列表信息
@@ -88,6 +87,15 @@ def get_model_list(request):
 def upload_models(request):
     """
     模型上传
+    :param request:
+    :return:
+    """
+    pass
+
+
+def download_models(request):
+    """
+    模型下载
     :param request:
     :return:
     """

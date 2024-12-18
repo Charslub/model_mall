@@ -10,7 +10,6 @@ from utils.token_utils import Token
 # Create your views here.
 @require_POST
 @sign_authenticator
-@path("/login", name="client_login")
 def login(request):
     """
     用户端登录
@@ -38,7 +37,6 @@ def login(request):
 
 @require_POST
 @sign_authenticator
-@path("/register", name="client_register")
 def register(request):
     """
     用户注册接口

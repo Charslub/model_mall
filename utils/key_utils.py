@@ -8,7 +8,7 @@ class BaseKey:
 
     @staticmethod
     def load_private_key():
-        with open("private_key.pem", "r") as key_file:
+        with open("/keys/private_key.pem", "r") as key_file:
             private_key = key_file.read()
 
         return serialization.load_pem_private_key(
@@ -18,7 +18,7 @@ class BaseKey:
     @staticmethod
     # 读取公钥
     def load_public_key():
-        with open("public_key.pem", "r") as key_file:
+        with open("/keys/public_key.pem", "r") as key_file:
             public_key = key_file.read()
 
         return serialization.load_pem_public_key(
