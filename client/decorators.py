@@ -24,6 +24,7 @@ def token_authenticator(func):
             verify_res, verify_msg = token.verify_jwt_token(token)
             if not verify_res:
                 raise AuthenticationFailed(verify_msg)
+            kwargs["uid"] = verify_msg["uid"]
             return func(request, *args, **kwargs)
         except Exception as e:
             return JsonResponse(status=401, data={"data": {}, "msg": str(e)})
