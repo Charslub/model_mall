@@ -2,9 +2,9 @@ development:
   DEBUG: True
   DATABASE:
     ENGINE: django.db.backends.mysql
-    NAME: django_model_mall
+    NAME: model
     USER: root
-    PASSWORD: '5483201'
+    PASSWORD: 'zqy5483201'
     HOST: localhost
     PORT: 3306
 
@@ -15,5 +15,5 @@ production:
     NAME: django_model_mall
     USER: root
     PASSWORD: '3b4502d1e93360a8'
-    HOST: 172.19.60.234
+    HOST: '172.19.60.234'
     PORT: 3306
