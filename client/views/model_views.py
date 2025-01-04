@@ -81,7 +81,7 @@ def get_model_list(request):
                 ]
             }
 
-    return JsonResponse(status=200, data={"total": total, "data": model_dict.values()})
+    return JsonResponse(status=200, data={"total": total, "data": model_dict.values() if model_dict else {}})
 
 
 def upload_models(request):

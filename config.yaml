@@ -4,7 +4,7 @@ development:
     ENGINE: django.db.backends.mysql
     NAME: model
     USER: root
-    PASSWORD: 'zqy5483201'
+    PASSWORD: '5483201'
     HOST: localhost
     PORT: 3306
 
