@@ -70,7 +70,7 @@ def get_order_list_handler(request, **kwargs):
     except (KeyError, TypeError, ValueError) as e:
         return JsonResponse(status=400, data={"data": {}, "msg": f"参数错误，{e}"})
 
-    condition_sql, condition_list = [], []
+    condition_sql, condition_list, order_condition = ["uid = %s"], [uid], ""
     if filter_str:
         # 筛选模型名称
         condition_sql.append("model_name LIKE %s")
@@ -88,5 +88,13 @@ def get_order_list_handler(request, **kwargs):
     if end_time:
         condition_sql.append("create_time <= %s")
         condition_list.append(end_time)
+    condition_sql = " AND ".join(condition_sql)
+    condition_list.extend([offset, limit])
 
-    # sql = "SELECT SQL_CALC_FOUND_ROWS * FROM model.orders WHERE"
+    sql = (
+        "SELECT SQL_CALC_FOUND_ROWS * FROM model.orders "
+        f"WHERE {condition_sql} ORDER BY {order_by} LIMIT %s, %s;"
+    )
+    order_rs, order_total = SQLManager.fetchmany_total(sql, condition_list)
+
+    return JsonResponse(status=200, data={"data": order_rs, "total": order_total})
